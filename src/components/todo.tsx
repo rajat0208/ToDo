@@ -54,14 +54,20 @@ export default function Todo() {
                             alert((error as { message: string }).message)
                         }
                     }
-                    
+                    const deleteTask = async () => {
+                        try {
+                          await taskRepo.delete(task)
+                          setTasks(tasks.filter(t => t !== task))
+                        } catch (error: unknown) {
+                          alert((error as { message: string }).message)
+                        }
+                      }
                     return (
                         <div key={task.id}>
                             <input type="checkbox" checked={task.completed} onChange={e => setCompleted(e.target.checked)} />
                             <input value={task.title} onChange={e => setTitle(e.target.value)} />
                             <button onClick={saveTask}>Save</button>
-                            
-                            {task.title}
+                            <button onClick={deleteTask}>Delete</button>
                         </div>
                     )
                 })}
