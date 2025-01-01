@@ -11,7 +11,11 @@ export default function Todo() {
   const [tasks, setTasks] = useState<Task[]>([])
 
   useEffect(() => {
-    taskRepo.find().then(setTasks)
+    taskRepo.find({
+        limit:20,
+        orderBy:{createdAt:"desc"},
+        //where:{completed:true}
+    }).then(setTasks)
   }, [])
   return (
     <div>
