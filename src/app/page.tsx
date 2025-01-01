@@ -1,10 +1,8 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+
+// src/app/page.tsx
+
+import Todo from '../components/todo'
 
 export default function Home() {
-  return (
-    <div>
-      <h1>Todos</h1>
-    </div>
-  );
+  return <Todo />
 }
