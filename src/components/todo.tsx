@@ -10,7 +10,11 @@ const taskRepo = remult.repo(Task)
 export default function Todo() {
     const [tasks, setTasks] = useState<Task[]>([])
     const [newTaskTitle, setNewTaskTitle] = useState("")
-
+    const setAllCompleted = async (completed: boolean) => {
+        for (const task of await taskRepo.find()) {
+            await taskRepo.save({ ...task, completed })
+        }
+    }
     const addTask = async (e: FormEvent) => {
         e.preventDefault()
         try {
@@ -56,12 +60,13 @@ export default function Todo() {
                     }
                     const deleteTask = async () => {
                         try {
-                          await taskRepo.delete(task)
-                          setTasks(tasks.filter(t => t !== task))
+                            await taskRepo.delete(task)
+                            setTasks(tasks.filter(t => t !== task))
                         } catch (error: unknown) {
-                          alert((error as { message: string }).message)
+                            alert((error as { message: string }).message)
                         }
-                      }
+                    }
+                   
                     return (
                         <div key={task.id}>
                             <input type="checkbox" checked={task.completed} onChange={e => setCompleted(e.target.checked)} />
@@ -69,8 +74,14 @@ export default function Todo() {
                             <button onClick={saveTask}>Save</button>
                             <button onClick={deleteTask}>Delete</button>
                         </div>
+                        
                     )
                 })}
+                
+                <div>
+                <button onClick={() => setAllCompleted(true)}>Set All Completed</button>
+                <button onClick={() => setAllCompleted(false)}>Set All Uncompleted</button>
+                </div>
             </main>
         </div>
     )
