@@ -4,17 +4,19 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { remult } from 'remult'
 import { Task } from '../shared/Task'
+import { TasksController } from '@/shared/TasksController'
 
 const taskRepo = remult.repo(Task)
 
 export default function Todo() {
     const [tasks, setTasks] = useState<Task[]>([])
     const [newTaskTitle, setNewTaskTitle] = useState("")
-    const setAllCompleted = async (completed: boolean) => {
-        for (const task of await taskRepo.find()) {
-            await taskRepo.save({ ...task, completed })
-        }
-    }
+  
+
+const setAllCompleted = async (completed: boolean) => {
+    await TasksController.setAllCompleted(completed)
+  }
+
     const addTask = async (e: FormEvent) => {
         e.preventDefault()
         try {
