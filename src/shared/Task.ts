@@ -1,9 +1,11 @@
 // src/shared/Task.ts
 
-import { Entity, Fields, Validators } from 'remult'
+import { Allow, Entity, Fields, Validators } from 'remult'
 
 @Entity('tasks', {
-  allowApiCrud: true,
+  allowApiCrud: Allow.authenticated,
+   allowApiInsert: "admin",
+  allowApiDelete: "admin"
 })
 export class Task {
   @Fields.cuid()
@@ -12,7 +14,8 @@ export class Task {
   @Fields.string<Task>({
     validate: (task) =>{
       if(task.title.length<3) throw "Too Short"
-    }
+    },
+     allowApiUpdate: "admin"
   })
   title = ''
 
