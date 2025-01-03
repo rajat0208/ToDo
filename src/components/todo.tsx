@@ -40,6 +40,7 @@ const setAllCompleted = async (completed: boolean) => {
         <div>
             <h1>Todos</h1>
             <main>
+            {taskRepo.metadata.apiInsertAllowed() && (
                 <form onSubmit={addTask}>
                     <input
                         value={newTaskTitle}
@@ -47,6 +48,7 @@ const setAllCompleted = async (completed: boolean) => {
                         onChange={e => setNewTaskTitle(e.target.value)} />
                     <button>ADD</button>
                 </form>
+            )}
                 {tasks.map((task) => {
                     const setTask = (value: Task) =>
                         setTasks(tasks => tasks.map(t => (t === task ? value : t)))
@@ -74,7 +76,9 @@ const setAllCompleted = async (completed: boolean) => {
                             <input type="checkbox" checked={task.completed} onChange={e => setCompleted(e.target.checked)} />
                             <input value={task.title} onChange={e => setTitle(e.target.value)} />
                             <button onClick={saveTask}>Save</button>
+                            {taskRepo.metadata.apiDeleteAllowed(task) && (
                             <button onClick={deleteTask}>Delete</button>
+                            )}
                         </div>
                         
                     )
